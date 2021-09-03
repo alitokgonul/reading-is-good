@@ -1,4 +1,4 @@
-package com.example.readingisgood;
+package com.getir.readingisgood;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
