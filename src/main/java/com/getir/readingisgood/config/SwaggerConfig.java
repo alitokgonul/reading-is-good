@@ -1,66 +1,68 @@
 package com.getir.readingisgood.config;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
+import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.DocExpansion;
-import springfox.documentation.swagger.web.ModelRendering;
-import springfox.documentation.swagger.web.OperationsSorter;
-import springfox.documentation.swagger.web.TagsSorter;
-import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger.web.UiConfigurationBuilder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
+@EnableSwagger2
 public class SwaggerConfig {
 
-    private ApiInfo apiInfo() {
-        return new ApiInfo("Reading Is Good API",
-                           "Reading Is Good Application.",
-                           "API TOS",
-                           "Terms of service desc",
-                           new Contact("Ali Tokgönül", "www.getir.com", "getir@company.com"),
-                           "License of API",
-                           "API license URL",
-                           Collections.emptyList());
-    }
+    private static final String AUTHORIZATION = "Authorization";
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
-                                                      .select()
+        return new Docket(DocumentationType.SWAGGER_2).select()
                                                       .apis(RequestHandlerSelectors.any())
-                                                      .paths(PathSelectors.any())
-                                                      .build();
+                                                      .paths(Predicates.not(PathSelectors.regex("/error")))
+                                                      .build()
+                                                      .apiInfo(metadata())
+                                                      .useDefaultResponseMessages(false)
+                                                      .securitySchemes(Collections.singletonList(apiKey()))
+                                                      .securityContexts(Collections.singletonList(securityContext()))
+                                                      .genericModelSubstitutes(Optional.class);
+
     }
 
-    /**
-     * SwaggerUI information
-     */
-    @Bean
-    UiConfiguration uiConfig() {
-        return UiConfigurationBuilder.builder()
-                                     .deepLinking(true)
-                                     .displayOperationId(false)
-                                     .defaultModelsExpandDepth(1)
-                                     .defaultModelExpandDepth(1)
-                                     .defaultModelRendering(ModelRendering.EXAMPLE)
-                                     .displayRequestDuration(false)
-                                     .docExpansion(DocExpansion.NONE)
-                                     .filter(false)
-                                     .maxDisplayedTags(null)
-                                     .operationsSorter(OperationsSorter.ALPHA)
-                                     .showExtensions(false)
-                                     .tagsSorter(TagsSorter.ALPHA)
-                                     .supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
-                                     .validatorUrl(null)
-                                     .build();
+    private ApiInfo metadata() {
+        return new ApiInfoBuilder().title("Reading Is Good API")
+                                   .description(
+                                       "ReadingIsGood is an online books retail firm which operates only on the Internet.")
+                                   .version("1.0.0")
+                                   .contact(new Contact(null, null, "alitokgonul@gmail.com"))
+                                   .build();
+    }
+
+    private ApiKey apiKey() {
+        return new ApiKey(AUTHORIZATION, AUTHORIZATION, "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference(AUTHORIZATION, authorizationScopes));
     }
 
 }
