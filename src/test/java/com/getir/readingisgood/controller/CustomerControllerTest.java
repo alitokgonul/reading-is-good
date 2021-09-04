@@ -44,7 +44,6 @@ class CustomerControllerTest {
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
         mockMvc = MockMvcBuilders.standaloneSetup(new CustomerController(customerService, modelMapper)).build();
     }
 

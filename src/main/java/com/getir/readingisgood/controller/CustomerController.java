@@ -47,8 +47,8 @@ public class CustomerController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "The customer successfully logged in."),
                             @ApiResponse(code = 400, message = "Something went wrong"),
                             @ApiResponse(code = 422, message = "Invalid username/password supplied") })
-    public ResponseEntity<UserDTO> login(@ApiParam("username") @Valid @RequestParam String username,
-                                         @ApiParam("password") @Valid @RequestParam String password) {
+    public ResponseEntity<UserDTO> login(@ApiParam("username") @RequestParam String username,
+                                         @ApiParam("password") @RequestParam String password) {
         return ResponseEntity.ok(customerService.login(username, password));
     }
 }
