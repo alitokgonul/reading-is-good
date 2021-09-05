@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.getir.readingisgood.controller.model.BookOrderDTO;
 import com.getir.readingisgood.controller.model.OrderDTO;
+import com.getir.readingisgood.entity.OrderDetail;
 import com.getir.readingisgood.entity.OrderStatus;
 import org.springframework.data.domain.Page;
 
@@ -21,4 +22,6 @@ public interface OrderService {
     Page<OrderDTO> listOrders(HttpServletRequest req, Integer page, Integer size);
 
     List<OrderDTO> filterByDate(LocalDate startDate, LocalDate endDate);
+
+    List<OrderDetail> listUserAllOrders(HttpServletRequest req);
 }

@@ -113,6 +113,15 @@ public class OrderServiceImpl implements OrderService {
         return orderDetails.stream().map(order -> modelMapper.map(order, OrderDTO.class)).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public List<OrderDetail> listUserAllOrders(HttpServletRequest req) {
+        final Customer customer = customerService.getCustomerInfo(req);
+
+        List<OrderDetail> orderDetails = orderDetailRepository.findAllByCustomer_Id(customer.getId());
+        return orderDetails;
+    }
+
     private OrderDTO convertOrderDTO(OrderDetail orderDetail) {
         return modelMapper.map(orderDetail, OrderDTO.class);
     }

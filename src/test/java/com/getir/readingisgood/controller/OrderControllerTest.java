@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -16,7 +16,6 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.getir.readingisgood.controller.model.BookOrderDTO;
 import com.getir.readingisgood.controller.model.OrderDTO;
-import com.getir.readingisgood.controller.model.UserDTO;
 import com.getir.readingisgood.entity.OrderStatus;
 import com.getir.readingisgood.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;

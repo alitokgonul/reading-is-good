@@ -16,4 +16,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     Page<OrderDetail> filterOrders(Long customerId, Pageable pageable);
 
     List<OrderDetail> findAllByCreatedDateTimeAfterAndCreatedDateTimeBefore(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<OrderDetail> findAllByCustomer_Id(Long customerId);
 }
