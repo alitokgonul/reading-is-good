@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "0b6d5edf-6af9-4d15-8024-a254b7074a29",
+		"name": "reading-is-good",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/customers/login?password=test&username=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"login"
+					],
+					"query": [
+						{
+							"key": "password",
+							"value": "test"
+						},
+						{
+							"key": "username",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"username@mail.com\",\r\n    \"lastName\": \"new lastName\",\r\n    \"name\": \"new name\",\r\n    \"password\": \"newPass\",\r\n    \"phone\": 5555555555,\r\n    \"username\": \"newuser\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/customers/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addBook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": {\r\n        \"lastName\": \"string\",\r\n        \"name\": \"string\"\r\n    },\r\n    \"name\": \"Flowers for Algernon\",\r\n    \"price\": 12.4,\r\n    \"publishDate\": \"1959-12-04\",\r\n    \"quantity\": 311\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/books/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"books",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateBook",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": {\r\n        \"lastName\": \"string\",\r\n        \"name\": \"string\"\r\n    },\r\n    \"name\": \"Flowers for Algernon\",\r\n    \"price\": 12.4,\r\n    \"publishDate\": \"1959-12-04\",\r\n    \"quantity\": 311\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/books/update/1?quantity=12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"books",
+						"update",
+						"1"
+					],
+					"query": [
+						{
+							"key": "quantity",
+							"value": "12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list-customer-orders",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": {\r\n        \"lastName\": \"string\",\r\n        \"name\": \"string\"\r\n    },\r\n    \"name\": \"Flowers for Algernon\",\r\n    \"price\": 12.4,\r\n    \"publishDate\": \"1959-12-04\",\r\n    \"quantity\": 311\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/customers/list-orders?page=0&size=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"customers",
+						"list-orders"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-order-by-id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-order-by-date",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/filter-date?endDate=2021-12-12&startDate=2020-12-12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"filter-date"
+					],
+					"query": [
+						{
+							"key": "endDate",
+							"value": "2021-12-12"
+						},
+						{
+							"key": "startDate",
+							"value": "2020-12-12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order-status-update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/status-update/1?orderStatus=PROCESSING",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"status-update",
+						"1"
+					],
+					"query": [
+						{
+							"key": "orderStatus",
+							"value": "PROCESSING"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"bookId\": 1,\r\n    \"quantity\": 3\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "10",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjMwODc2NTM4LCJleHAiOjE2MzA4NzcxMzh9.YeMU9aPriKt-h_-WZhs0tCWF--_U66P6uYm8waX97iM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"bookId\": 1,\r\n    \"quantity\": 3\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/statistics/customer-monthly-order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"statistics",
+						"customer-monthly-order"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "10",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
