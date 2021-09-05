@@ -21,6 +21,7 @@ import com.getir.readingisgood.controller.model.BookOrderDTO;
 import com.getir.readingisgood.entity.Book;
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.OrderDetail;
+import com.getir.readingisgood.entity.OrderStatus;
 import com.getir.readingisgood.exception.CustomException;
 import com.getir.readingisgood.repository.OrderDetailRepository;
 import org.junit.jupiter.api.Test;
@@ -72,7 +73,7 @@ class OrderServiceTest {
         } catch (CustomException ex) {
             // then
             assertEquals(ex.getHttpStatus(), HttpStatus.BAD_REQUEST);
-            assertTrue(ex.getMessage().contains("Stock is not sufficient"));
+            assertTrue(ex.getMessage().contains("Book with id"));
             verify(bookService, never()).update(anyLong(), anyInt());
             verify(orderDetailRepository, never()).save(any(OrderDetail.class));
         }
@@ -94,6 +95,36 @@ class OrderServiceTest {
             assertTrue(ex.getMessage().contains("Stock is not sufficient"));
             verify(bookService, never()).update(anyLong(), anyInt());
             verify(orderDetailRepository, never()).save(any(OrderDetail.class));
+        }
+    }
+
+    @Test
+    void updateStatus_success() {
+        // given
+        given(orderDetailRepository.findById(any())).willReturn(Optional.of(createOrderDetail()));
+
+        // when
+        orderService.updateStatus(1L, OrderStatus.DELIVERED);
+
+        // then
+        verify(orderDetailRepository).findById(anyLong());
+        verify(orderDetailRepository).save(any(OrderDetail.class));
+    }
+
+    @Test
+    void updateStatus_fail() {
+        // given
+        given(orderDetailRepository.findById(any())).willReturn(Optional.empty());
+
+        try {
+            // when
+            orderService.updateStatus(1L, OrderStatus.DELIVERED);
+            fail("exception not thrown");
+        } catch (CustomException ex) {
+            // then
+            assertEquals(ex.getHttpStatus(), HttpStatus.BAD_REQUEST);
+            assertTrue(ex.getMessage().contains("Order with id"));
+            verify(orderDetailRepository, never()).save(any());
         }
     }
 
@@ -120,5 +151,12 @@ class OrderServiceTest {
         dto.setBookId(bookId);
         dto.setQuantity(quantity);
         return Collections.singletonList(dto);
+    }
+
+    private OrderDetail createOrderDetail() {
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setId(1L);
+        orderDetail.setOrderStatus(OrderStatus.PROCESSING);
+        return orderDetail;
     }
 }

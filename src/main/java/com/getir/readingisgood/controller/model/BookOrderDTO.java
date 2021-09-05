@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookOrderDTO {
 
-    @ApiModelProperty(notes = "Book id", required = true, example = "1L")
+    @ApiModelProperty(notes = "Book id", required = true, example = "1")
     @NotNull(message = "Book id is mandatory")
     private Long bookId;
 

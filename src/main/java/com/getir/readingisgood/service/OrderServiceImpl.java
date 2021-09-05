@@ -59,4 +59,16 @@ public class OrderServiceImpl implements OrderService {
         orderDetail.setOrderItemList(orderInfoList);
         orderDetailRepository.save(orderDetail);
     }
+
+    @Override
+    @Transactional
+    public void updateStatus(final Long id, final OrderStatus orderStatus) {
+        OrderDetail order = orderDetailRepository.findById(id)
+                                                 .orElseThrow(() -> new CustomException("Order with id - "
+                                                                                        + id
+                                                                                        + ", could not be found in db.",
+                                                                                        HttpStatus.BAD_REQUEST));
+        order.setOrderStatus(orderStatus);
+        orderDetailRepository.save(order);
+    }
 }

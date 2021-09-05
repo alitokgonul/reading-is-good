@@ -1,6 +1,7 @@
 package com.getir.readingisgood.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collections;
@@ -45,6 +46,30 @@ class OrderControllerTest {
         // when / then
         mockMvc.perform(post(ORDER_ENDPOINT).contentType(MediaType.APPLICATION_JSON).content(createRequestStr))
                .andExpect(status().isOk())
+               .andReturn();
+    }
+
+    @Test
+    void orderStatusUpdate_success() throws Exception {
+        // given
+        List<BookOrderDTO> request = createBookOrderDtos(1L, 2);
+        String createRequestStr = objectMapper.writeValueAsString(request);
+
+        // when / then
+        mockMvc.perform(put(ORDER_ENDPOINT + "/status-update/1?orderStatus=DELIVERED").contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andReturn();
+    }
+
+    @Test
+    void orderStatusUpdate_without_orderStatus() throws Exception {
+        // given
+        List<BookOrderDTO> request = createBookOrderDtos(1L, 2);
+        String createRequestStr = objectMapper.writeValueAsString(request);
+
+        // when / then
+        mockMvc.perform(put(ORDER_ENDPOINT + "/status-update/1").contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
                .andReturn();
     }
 

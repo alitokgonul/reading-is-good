@@ -1,5 +1,7 @@
 package com.getir.readingisgood;
 
+import java.time.LocalDateTime;
+
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class ReadingIsGoodApplication implements CommandLineRunner {
         customer.setName("Ali");
         customer.setLastName("Tokgönül");
         customer.setPhone("5555555555");
+        customer.setCreatedDateTime(LocalDateTime.now());
         customerService.register(customer);
     }
 
