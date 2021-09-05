@@ -48,12 +48,12 @@ public class OrderServiceImpl implements OrderService {
                                           HttpStatus.BAD_REQUEST);
             }
             // valid bookId and ordered book quantity is sufficient
-            final int as = book.getQuantity() - orderedBook.getQuantity();
+            final int restQuantity = book.getQuantity() - orderedBook.getQuantity();
             OrderItem orderInfo = new OrderItem();
             orderInfo.setQuantity(orderedBook.getQuantity());
             orderInfo.setBook(book);
             orderInfoList.add(orderInfo);
-            bookService.update(book.getId(), as);
+            bookService.update(book.getId(), restQuantity);
             log.info("The quantity of book with id - {} is successfully updated.", book.getId());
         });
         OrderDetail orderDetail = new OrderDetail();
