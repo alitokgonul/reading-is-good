@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.getir.readingisgood.controller.model.UserDTO;
 import com.getir.readingisgood.entity.Customer;
@@ -89,6 +92,25 @@ class CustomerServiceTest {
         // when / then
         assertThrows(CustomException.class, () -> customerService.login(USER_NAME, anyString()));
         verify(authenticationManager).authenticate(any());
+    }
+
+    @Test
+    void getCustomerInfo() {
+        // given
+        final Customer customer = createCustomer();
+        HttpServletRequest req = mock(HttpServletRequest.class);
+        given(customerRepository.findByUsername(anyString())).willReturn(customer);
+        given(jwtTokenProvider.resolveToken(req)).willReturn(customer.getUsername());
+        given(jwtTokenProvider.getUsername(anyString())).willReturn(customer.getUsername());
+
+        // when
+        Customer returnedCustomer = customerService.getCustomerInfo(req);
+
+        // then
+        assertEquals(returnedCustomer.getUsername(), customer.getUsername());
+        assertEquals(returnedCustomer.getEmail(), customer.getEmail());
+        assertEquals(returnedCustomer.getPassword(), customer.getPassword());
+        assertEquals(returnedCustomer.getLastName(), customer.getLastName());
     }
 
     private Customer createCustomer() {

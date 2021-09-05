@@ -1,5 +1,6 @@
 package com.getir.readingisgood.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.getir.readingisgood.controller.model.UserDTO;
@@ -51,5 +52,10 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (AuthenticationException e) {
             throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
+
+    @Override
+    public Customer getCustomerInfo(final HttpServletRequest req) {
+        return customerRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
     }
 }

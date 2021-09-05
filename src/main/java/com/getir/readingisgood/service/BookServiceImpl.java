@@ -1,5 +1,7 @@
 package com.getir.readingisgood.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import com.getir.readingisgood.controller.model.BookDTO;
@@ -36,5 +38,10 @@ public class BookServiceImpl implements BookService {
 
         book.setQuantity(quantity);
         return modelMapper.map(bookRepository.save(book), BookDTO.class);
+    }
+
+    @Override
+    public Optional<Book> getById(final Long id) {
+        return bookRepository.findById(id);
     }
 }

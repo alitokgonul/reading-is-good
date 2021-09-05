@@ -3,6 +3,7 @@ package com.getir.readingisgood.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -94,6 +95,23 @@ class BookServiceTest {
         // when / then
         assertThrows(CustomException.class, () -> bookService.update(1L, 5));
         verify(bookRepository).findById(anyLong());
+    }
+
+    @Test
+    void getById_success() {
+        // given
+        final Book book = createBook();
+        given(bookRepository.findById(anyLong())).willReturn(Optional.of(book));
+
+        // when
+        Optional<Book> returnedBook = bookService.getById(1L);
+
+        // then
+        assertTrue(returnedBook.isPresent());
+        assertEquals(returnedBook.get().getId(), 1L);
+        assertEquals(returnedBook.get().getPrice(), book.getPrice());
+        assertEquals(returnedBook.get().getQuantity(), book.getQuantity());
+        assertNotNull(returnedBook.get().getAuthor());
     }
 
     private Book createBook() {
