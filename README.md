@@ -63,4 +63,28 @@ $ mvn spring-boot:run
 
 7. Navigate to `http://localhost:8080/h2-console/login.jsp` to check the db
 
-8. Example calls for postman `reading-is-good.postman_collection.json` added to the project directory 
+8. Example calls for postman `reading-is-good.postman_collection.json` added to the project directory
+
+# Run with docker
+
+1. Go to the project directory
+
+```
+$ cd .../reading-is-good
+```
+
+2. run 
+```
+$ mvn clean install
+```
+
+3. build image
+```
+$  docker build -t reading-is-good.jar .
+```
+
+3. run the jar
+```
+$  docker run -p 9090:8080 reading-is-good.jar
+```
+note: be careful, with this command, app run 9090 port
