@@ -18,6 +18,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.getir.readingisgood.controller.model.BookOrderDTO;
+import com.getir.readingisgood.controller.model.OrderDTO;
 import com.getir.readingisgood.entity.Book;
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.OrderDetail;
@@ -28,7 +29,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,6 +45,9 @@ class OrderServiceTest {
 
     @Mock
     private BookService bookService;
+
+    @Spy
+    private ModelMapper modelMapper;
 
     @InjectMocks
     private OrderServiceImpl orderService;
@@ -125,6 +131,36 @@ class OrderServiceTest {
             assertEquals(ex.getHttpStatus(), HttpStatus.BAD_REQUEST);
             assertTrue(ex.getMessage().contains("Order with id"));
             verify(orderDetailRepository, never()).save(any());
+        }
+    }
+
+    @Test
+    void getById_success() {
+        // given
+        final OrderDetail orderDetail = createOrderDetail();
+        given(orderDetailRepository.findById(any())).willReturn(Optional.of(orderDetail));
+
+        // when
+        OrderDTO dto = orderService.getById(1L);
+
+        // then
+        assertEquals(dto.getId(), orderDetail.getId());
+        assertEquals(dto.getOrderStatus(), orderDetail.getOrderStatus());
+    }
+
+    @Test
+    void getById_fail() {
+        // given
+        given(orderDetailRepository.findById(any())).willReturn(Optional.empty());
+
+        try {
+            // when
+            orderService.getById(1L);
+            fail("exception not thrown");
+        } catch (CustomException ex) {
+            // then
+            assertEquals(ex.getHttpStatus(), HttpStatus.BAD_REQUEST);
+            assertTrue(ex.getMessage().contains("Order with id"));
         }
     }
 

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.getir.readingisgood.controller.model.BookOrderDTO;
+import com.getir.readingisgood.controller.model.OrderDTO;
 import com.getir.readingisgood.entity.Book;
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.OrderDetail;
@@ -16,6 +17,7 @@ import com.getir.readingisgood.exception.CustomException;
 import com.getir.readingisgood.repository.OrderDetailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final CustomerService customerService;
     private final BookService bookService;
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -70,5 +73,17 @@ public class OrderServiceImpl implements OrderService {
                                                                                         HttpStatus.BAD_REQUEST));
         order.setOrderStatus(orderStatus);
         orderDetailRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDTO getById(final Long id) {
+        OrderDetail orderDetail = orderDetailRepository.findById(id)
+                                                       .orElseThrow(() -> new CustomException("Order with id - "
+                                                                                              + id
+                                                                                              + ", could not be found in db.",
+                                                                                              HttpStatus.BAD_REQUEST));
+
+        return  modelMapper.map(orderDetail, OrderDTO.class);
     }
 }

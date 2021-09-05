@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.getir.readingisgood.controller.model.BookOrderDTO;
+import com.getir.readingisgood.controller.model.OrderDTO;
 import com.getir.readingisgood.entity.OrderStatus;
 import com.getir.readingisgood.service.OrderService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,5 +55,16 @@ public class OrderController {
     public ResponseEntity<Void> orderStatusUpdate(@PathVariable Long id, @RequestParam OrderStatus orderStatus) {
         orderService.updateStatus(id, orderStatus);
         return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(value = "Get order detail by id")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Order detail is successfully retrieved."),
+                            @ApiResponse(code = 400, message = "Please check your request"),
+                            @ApiResponse(code = 401, message = "Authorization error"),
+                            @ApiResponse(code = 500, message = "Unexpected server error") })
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
+
+        return ResponseEntity.ok(orderService.getById(id));
     }
 }
