@@ -1,6 +1,7 @@
 package com.getir.readingisgood.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -11,6 +12,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +35,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
@@ -164,6 +169,36 @@ class OrderServiceTest {
         }
     }
 
+    @Test
+    void listOrders() {
+        // given
+        given(customerService.getCustomerInfo(any())).willReturn(createCustomer());
+        given(orderDetailRepository.filterOrders(any(), any())).willReturn(createOrderDetailPage());
+
+        // when
+        Page<OrderDTO> dto = orderService.listOrders(mock(HttpServletRequest.class), 0, 2);
+
+        // then
+        assertNotNull(dto.getContent());
+        assertEquals(dto.getContent().get(0).getId(), 1L);
+        assertEquals(dto.getContent().get(0).getOrderStatus(), OrderStatus.PROCESSING);
+    }
+
+    @Test
+    void filterByDate() {
+        // given
+        given(orderDetailRepository.findAllByCreatedDateTimeAfterAndCreatedDateTimeBefore(any(), any())).willReturn(
+            Arrays.asList(createOrderDetail()));
+
+        // when
+        List<OrderDTO> dto = orderService.filterByDate(LocalDate.of(2020, 01, 02), LocalDate.of(2024, 01, 01));
+
+        // then
+        assertNotNull(dto);
+        assertEquals(dto.get(0).getId(), 1L);
+        assertEquals(dto.get(0).getOrderStatus(), OrderStatus.PROCESSING);
+    }
+
     private Customer createCustomer() {
         Customer customer = new Customer();
         customer.setPhone("55555555555");
@@ -194,5 +229,10 @@ class OrderServiceTest {
         orderDetail.setId(1L);
         orderDetail.setOrderStatus(OrderStatus.PROCESSING);
         return orderDetail;
+    }
+
+    private Page<OrderDetail> createOrderDetailPage() {
+
+        return new PageImpl<>(Collections.singletonList(createOrderDetail()));
     }
 }

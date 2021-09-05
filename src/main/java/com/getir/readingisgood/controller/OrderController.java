@@ -1,5 +1,6 @@
 package com.getir.readingisgood.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,5 +68,17 @@ public class OrderController {
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) {
 
         return ResponseEntity.ok(orderService.getById(id));
+    }
+
+    @ApiOperation(value = "List orders by date interval")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Order details are successfully retrieved."),
+                            @ApiResponse(code = 400, message = "Please check your request"),
+                            @ApiResponse(code = 401, message = "Authorization error"),
+                            @ApiResponse(code = 500, message = "Unexpected server error") })
+    @GetMapping("/filter-date")
+    public ResponseEntity<List<OrderDTO>> filterByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        return ResponseEntity.ok(orderService.filterByDate(startDate, endDate));
     }
 }

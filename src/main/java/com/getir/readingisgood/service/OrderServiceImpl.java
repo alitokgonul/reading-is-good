@@ -1,7 +1,10 @@
 package com.getir.readingisgood.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -18,6 +21,9 @@ import com.getir.readingisgood.repository.OrderDetailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -84,6 +90,30 @@ public class OrderServiceImpl implements OrderService {
                                                                                               + ", could not be found in db.",
                                                                                               HttpStatus.BAD_REQUEST));
 
-        return  modelMapper.map(orderDetail, OrderDTO.class);
+        return modelMapper.map(orderDetail, OrderDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public Page<OrderDTO> listOrders(HttpServletRequest req, final Integer page, final Integer size) {
+        final Customer customer = customerService.getCustomerInfo(req);
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<OrderDetail> orderDetails = orderDetailRepository.filterOrders(customer.getId(), pageable);
+        return orderDetails.map(this::convertOrderDTO);
+    }
+
+    @Override
+    @Transactional
+    public List<OrderDTO> filterByDate(final LocalDate startDate, final LocalDate endDate) {
+        List<OrderDetail> orderDetails = orderDetailRepository.findAllByCreatedDateTimeAfterAndCreatedDateTimeBefore(
+            startDate.atTime(LocalTime.MIN),
+            endDate.atTime(LocalTime.MAX));
+
+        return orderDetails.stream().map(order -> modelMapper.map(order, OrderDTO.class)).collect(Collectors.toList());
+    }
+
+    private OrderDTO convertOrderDTO(OrderDetail orderDetail) {
+        return modelMapper.map(orderDetail, OrderDTO.class);
     }
 }

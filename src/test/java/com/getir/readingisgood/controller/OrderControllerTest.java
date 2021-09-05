@@ -1,6 +1,7 @@
 package com.getir.readingisgood.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -8,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -98,6 +100,16 @@ class OrderControllerTest {
 
         assertEquals(dto.getId(), 1L);
         assertEquals(dto.getOrderStatus(), OrderStatus.PROCESSING);
+    }
+
+    @Test
+    void filterByDate_success() throws Exception {
+        // given
+        given(orderService.filterByDate(any(), any())).willReturn(Arrays.asList(createOrderDTO()));
+
+        // when / then
+        mockMvc.perform(get(ORDER_ENDPOINT + "/filter-date?endDate=2020-10-31&startDate=2021-01-01").contentType(
+            MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
     }
 
     private List<BookOrderDTO> createBookOrderDtos(Long bookId, Integer quantity) {

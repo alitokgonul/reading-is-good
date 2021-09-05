@@ -3,6 +3,7 @@ package com.getir.readingisgood.service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import com.getir.readingisgood.controller.model.OrderDTO;
 import com.getir.readingisgood.controller.model.UserDTO;
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.exception.CustomException;
@@ -10,6 +11,9 @@ import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
