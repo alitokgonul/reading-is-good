@@ -62,3 +62,5 @@ $ mvn spring-boot:run
 6. Navigate to `http://localhost:8080/swagger-ui.html` in your browser to check everything is working correctly. You can change the default port in the `application.yml` file
 
 7. Navigate to `http://localhost:8080/h2-console/login.jsp` to check the db
+
+8. Example calls for postman `reading-is-good.postman_collection.json` added to the project directory 
