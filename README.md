@@ -8,6 +8,7 @@ ReadingIsGood is an online books retail firm which operates only on the Internet
 ![](https://img.shields.io/badge/h2-✓-blue.svg)
 ![](https://img.shields.io/badge/hibernate-✓-blue.svg)
 ![](https://img.shields.io/badge/jwt-✓-blue.svg)
+![](https://img.shields.io/badge/docker-✓-blue.svg)
 ![](https://img.shields.io/badge/swagger_2-✓-blue.svg)
 
 # How to get token

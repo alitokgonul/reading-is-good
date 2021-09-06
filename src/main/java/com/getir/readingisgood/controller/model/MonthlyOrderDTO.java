@@ -1,7 +1,7 @@
 package com.getir.readingisgood.controller.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Month;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MonthlyOrderDTO {
 
-    @ApiModelProperty(notes = "Monthly date")
-    private LocalDate date;
+    @ApiModelProperty(notes = "Month")
+    private Month month;
 
     @ApiModelProperty(notes = "Total order count")
     private Integer totalOrderCount;
