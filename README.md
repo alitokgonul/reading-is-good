@@ -40,7 +40,6 @@ or you can create a new use :
 ```
 $ git clone https://github.com/<your-user>/reading-is-good.git
 ```
-Note: contact with me to get permission since the repo is private
 
 3. Navigate into the folder
 
